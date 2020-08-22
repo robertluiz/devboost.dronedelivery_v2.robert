@@ -5,15 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
-=======
-    <Compile Remove="Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Devboost.DroneDelivery.Domain\Devboost.DroneDelivery.Domain.csproj" />
->>>>>>> 7acca4516dd996ce03ce4e3513050a7e77f1ab30
   </ItemGroup>
 
 </Project>
