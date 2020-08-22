@@ -1,4 +1,5 @@
 ﻿using System;
+using Devboost.DroneDelivery.Domain.Enums;
 
 namespace Devboost.DroneDelivery.Domain.Entities
 {
@@ -9,5 +10,6 @@ namespace Devboost.DroneDelivery.Domain.Entities
         public int Velocidade { get; set; }
         public int AutonomiaKm { get; set; }
         public int CargaGramas { get; set; }
+        public DroneStatus Status { get; set; }
     }
 }

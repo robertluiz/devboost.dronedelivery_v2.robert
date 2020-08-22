@@ -1,7 +1,16 @@
-﻿namespace Devboost.DroneDelivery.Domain.Entities
+﻿using System;
+using Devboost.DroneDelivery.Domain.Enums;
+
+namespace Devboost.DroneDelivery.Domain.Entities
 {
-    public class Pedido
+    public class PedidoEntity
     {
-        
+        public Guid Id { get; set; }
+        public int PesoGramas {get; set;}
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public DateTime DataHora { get; set; }
+        public PedidoStatus Status { get; set; }
+        public DroneEntity Drone { get; set; }
     }
 }
