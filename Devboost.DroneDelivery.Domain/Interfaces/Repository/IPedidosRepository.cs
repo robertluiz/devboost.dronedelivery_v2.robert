@@ -7,7 +7,7 @@ namespace Devboost.DroneDelivery.Domain.Interfaces.Repository
     public interface IPedidosRepository
     {
         Task<List<PedidoEntity>> GetAll();
-        Task<List<PedidoEntity>> GetByDroneID(int droneID);
+        Task<PedidoEntity> GetByDroneID(int droneID);
         void Inserir(PedidoEntity pedido);
     }
 }

@@ -31,23 +31,24 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 
                 var list = await conexao.GetAllAsync<Pedido>();
 
-                return ConvertModelToModelEntity(list.AsList());
+                return ConvertListModelToModelEntity(list.AsList());
 			}
 		}
 
-        public async Task<List<PedidoEntity>> GetByDroneID(int droneID)
+        public async Task<PedidoEntity> GetByDroneID(int droneID)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
             {
-                var list = await conexao.QueryAsync<Pedido>(
-                    "SELECT * " +
-                    "FROM dbo.Pedido " +
-                    "WHERE DroneId = @droneID",
+                var p = await conexao.QuerySingleAsync<Pedido>(
+                    @"SELECT *
+                    FROM dbo.Pedido
+                    WHERE DroneId = @droneID
+                    AND Status = 'PendenteEntrega' ",
                     new { Nome = droneID }
                 );
 
-                return ConvertModelToModelEntity(list.AsList());
+                return ConvertModelToModelEntity(p);
             }
         }
 
@@ -75,27 +76,34 @@ namespace Devboost.DroneDelivery.Repository.Implementation
         }
 
 
-        protected List<PedidoEntity> ConvertModelToModelEntity(List<Pedido> listDrone)
+        protected List<PedidoEntity> ConvertListModelToModelEntity(List<Pedido> listPedido)
         {
 
             List<PedidoEntity> newListD = new List<PedidoEntity>();
 
-            foreach (var item in listDrone)
+            foreach (var item in listPedido)
             {
-                PedidoEntity d = new PedidoEntity()
-                {
-                    Id = item.Id,
-                    Status = (PedidoStatus)item.Status,
-                    DroneId = item.DroneId,
-                    DataHora = item.DataHora,
-                    Latitude = item.Latitude,
-                    Longitude = item.Longitude,
-                    PesoGramas = item.Peso
-                };
-
-                newListD.Add(d);
+                newListD.Add(ConvertModelToModelEntity(item));
             }
             return newListD;
+
+        }
+
+        protected PedidoEntity ConvertModelToModelEntity(Pedido pedido)
+        {
+
+            PedidoEntity p = new PedidoEntity()
+            {
+                Id = pedido.Id,
+                Status = (PedidoStatus)pedido.Status,
+                DroneId = pedido.DroneId,
+                DataHora = pedido.DataHora,
+                Latitude = pedido.Latitude,
+                Longitude = pedido.Longitude,
+                PesoGramas = pedido.Peso
+            };
+            
+            return p;
 
         }
 

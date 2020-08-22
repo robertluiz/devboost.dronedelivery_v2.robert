@@ -31,7 +31,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			{
 				var list = await conexao.GetAllAsync<Drone>();
                 
-                return ConvertModelToModelEntity(list.AsList());
+                return ConvertListModelToModelEntity(list.AsList());
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     new { Nome = status }
                 );
 
-                return ConvertModelToModelEntity(list.AsList());
+                return ConvertListModelToModelEntity(list.AsList());
             }
         }
 
@@ -68,28 +68,36 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
-        protected List<DroneEntity> ConvertModelToModelEntity(List<Drone> listDrone)        {
+        protected List<DroneEntity> ConvertListModelToModelEntity(List<Drone> listDrone)
+        {
 
             List<DroneEntity> newListD = new List<DroneEntity>();
 
             foreach (var item in listDrone)
             {
-                DroneEntity d = new DroneEntity()
-                {
-                    Id = item.Id,
-                    Status = (DroneStatus)item.Status,
-                    AutonomiaMinitos = item.Autonomia,
-                    CapacidadeGamas = item.Capacidade,
-                    VelocidadeKmH = item.Velocidade,
-                    DataAtualizacao = item.DataAtualizacao
-                };
-
-                newListD.Add(d);
+                newListD.Add(ConvertModelToModelEntity(item));
             }
             return newListD;
 
         }
-        
+
+        protected DroneEntity ConvertModelToModelEntity(Drone drone)
+        {
+
+            DroneEntity p = new DroneEntity()
+            {
+                Id = drone.Id,
+                Status = (DroneStatus)drone.Status,
+                AutonomiaMinitos = drone.Autonomia,
+                CapacidadeGamas = drone.Capacidade,
+                VelocidadeKmH = drone.Velocidade,
+                DataAtualizacao = drone.DataAtualizacao
+            };
+
+            return p;
+
+        }
+
 
         //public IEnumerable<DroneModel> ObterTodos()
         //{
