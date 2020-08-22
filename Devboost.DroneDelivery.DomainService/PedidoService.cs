@@ -20,12 +20,13 @@ namespace Devboost.DroneDelivery.DomainService
             
             //calculoDistancia
 
-            var distancia = 10;
+            var distancia = GeolocalizacaoService.CalcularDistanciaEmMetro(pedido.Latitude,pedido.Longitude);
             
             if (!novoPedido.ValidaPedido(distancia))
             {
                 return await Task.Factory.StartNew(()=> false);
             }
+            
             
             
             return true;
