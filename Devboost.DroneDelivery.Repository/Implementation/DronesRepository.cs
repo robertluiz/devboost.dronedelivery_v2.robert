@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
@@ -27,29 +28,29 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			using (SqlConnection conexao = new SqlConnection(
 				_configuracoes.GetConnectionString(_configConnectionString)))
 			{
-				var list = conexao.GetAll<Drone>();
-
-                List<DroneEntity> newListD = new List<DroneEntity>();
-
-                foreach (var item in list)
-                {
-                    DroneEntity d = new DroneEntity()
-                    {
-                        Id = item.Id,
-                        Status = (DroneStatus)item.Status,
-                        AutonomiaMinitos = item.Autonomia,
-                        CapacidadeGamas = item.Capacidade,
-                        VelocidadeKmH = item.Velocidade,
-                        DataAtualizacao = item.DataAtualizacao
-                    };
-
-                    newListD.Add(d);
-                }
-                return newListD.AsList();
+				List<Drone> list = conexao.GetAll<Drone>().AsList();
+                
+                return ConvertModelToModelEntity(list);
 			}
 		}
 
-        public void Atualizar(Drone drone)
+        public List<DroneEntity> GetByStatus(string status)
+        {
+            using (SqlConnection conexao = new SqlConnection(
+                _configuracoes.GetConnectionString(_configConnectionString)))
+            {
+                List<Drone> list = conexao.Query<Drone>(
+                    "SELECT * " +
+                    "FROM dbo.Drone " +
+                    "WHERE Status = @Status",
+                    new { Nome = status }
+                ).AsList();
+
+                return ConvertModelToModelEntity(list);
+            }
+        }
+
+            public void Atualizar(DroneEntity drone)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
@@ -65,6 +66,29 @@ namespace Devboost.DroneDelivery.Repository.Implementation
               );
             }
         }
+
+        protected List<DroneEntity> ConvertModelToModelEntity(List<Drone> listDrone)        {
+
+            List<DroneEntity> newListD = new List<DroneEntity>();
+
+            foreach (var item in listDrone)
+            {
+                DroneEntity d = new DroneEntity()
+                {
+                    Id = item.Id,
+                    Status = (DroneStatus)item.Status,
+                    AutonomiaMinitos = item.Autonomia,
+                    CapacidadeGamas = item.Capacidade,
+                    VelocidadeKmH = item.Velocidade,
+                    DataAtualizacao = item.DataAtualizacao
+                };
+
+                newListD.Add(d);
+            }
+            return newListD;
+
+        }
+        
 
         //public IEnumerable<DroneModel> ObterTodos()
         //{
