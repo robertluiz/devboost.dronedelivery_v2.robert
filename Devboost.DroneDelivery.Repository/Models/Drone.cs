@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 
-namespace Devboost.DroneDelivery.Domain.Models
+namespace Devboost.DroneDelivery.Repository.Models
 {
-    public class DroneModel
+    [Table("dbo.Drone")]
+    public class Drone
     {
-        public Guid Id { get; set; }
+        [ExplicitKey]
+        public int Id { get; set; }
         public int Capacidade { get; set; }
         public int Velocidade { get; set; }
         public int Autonomia { get; set; }
