@@ -25,6 +25,7 @@ namespace Devboost.DroneDelivery.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen();
             services.AddControllers();
             //services.AddTransient<IDronesRepository, DronesRepository>(); //Transiente faz com que seja criado um objeto para cada requisição realizada para essa interface, afim de evitar concorrência
             //services.AddTransient<IPedidosRepository, PedidosRepository>(); //Transiente faz com que seja criado um objeto para cada requisição realizada para essa interface, afim de evitar concorrência
@@ -33,11 +34,17 @@ namespace Devboost.DroneDelivery.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevBoost Drone Delivery");
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
