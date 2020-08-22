@@ -52,7 +52,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
-        public void Inserir(PedidoEntity pedido)
+        public async Task Inserir(PedidoEntity pedido)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
@@ -70,7 +70,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 				@DroneId
 				)";
 
-                conexao.Execute(query, new { Id, pedido.PesoGramas, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
+                await conexao.ExecuteAsync(query, new { Id, pedido.PesoGramas, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
               );
             }
         }

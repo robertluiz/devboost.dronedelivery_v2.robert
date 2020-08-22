@@ -8,7 +8,7 @@ namespace Devboost.DroneDelivery.Domain.Interfaces.Repository
     {
         Task<List<DroneEntity>> GetAll();
         Task<List<DroneEntity>> GetByStatus(string status);
-        void Atualizar(DroneEntity drone);
+        Task Atualizar(DroneEntity drone);
 
     }
 }

@@ -51,7 +51,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
-            public void Atualizar(DroneEntity drone)
+            public async Task Atualizar(DroneEntity drone)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
@@ -63,7 +63,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     WHERE Id = @id
                 ";
 
-                conexao.Execute(query, new { drone.Status, dataAtualizacao, drone.Id }
+               await conexao.ExecuteAsync(query, new { drone.Status, dataAtualizacao, drone.Id }
               );
             }
         }
