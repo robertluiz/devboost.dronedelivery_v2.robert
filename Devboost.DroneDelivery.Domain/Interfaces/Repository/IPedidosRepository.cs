@@ -6,5 +6,6 @@ namespace Devboost.DroneDelivery.Domain.Interfaces.Repository
     public interface IPedidosRepository
     {
         List<PedidoEntity> GetAll();
+        void Inserir(PedidoEntity pedido);
     }
 }

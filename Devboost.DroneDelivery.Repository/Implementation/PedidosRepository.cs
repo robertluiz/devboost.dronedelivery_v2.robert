@@ -2,6 +2,7 @@
 using Dapper.Contrib.Extensions;
 using Devboost.DroneDelivery.Domain.Entities;
 using Devboost.DroneDelivery.Domain.Enums;
+using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Repository.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,7 +11,7 @@ using System.Data.SqlClient;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
-    public class PedidosRepository
+    public class PedidosRepository : IPedidosRepository
     {
 
 		protected readonly string _configConnectionString = "DroneDelivery";
@@ -50,7 +51,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			}
 		}
 
-        public void Inserir(Pedido pedido)
+        public void Inserir(PedidoEntity pedido)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
@@ -68,7 +69,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 				@DroneId
 				)";
 
-                conexao.Execute(query, new { Id, pedido.Peso, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
+                conexao.Execute(query, new { Id, pedido.PesoGramas, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
               );
             }
         }
