@@ -11,4 +11,16 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Interface\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Interface\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Interface\**" />
+  </ItemGroup>
+
 </Project>

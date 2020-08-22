@@ -15,9 +15,9 @@ namespace Devboost.DroneDelivery.Domain.Entities
         public readonly int DistanciaMaxima = 17;
         public readonly int PesoGamasMaximo = 12000;
 
-        public bool ValidaPedido(int distanciaKm, int pesoGamas)
+        public bool ValidaPedido(int distanciaKm)
         {
-            return distanciaKm <= DistanciaMaxima && pesoGamas <= PesoGamasMaximo;
+            return distanciaKm <= DistanciaMaxima && PesoGramas <= PesoGamasMaximo;
         }
     }
 }
