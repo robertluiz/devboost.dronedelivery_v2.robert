@@ -80,7 +80,7 @@ namespace Devboost.DroneDelivery.DomainService
                         drone.DataAtualizacao = DateTime.Now;
                         await _dronesRepository.Atualizar(drone);
                         pedido.Status = PedidoStatus.Entregue;
-                        await _pedidoService.Atualizar(pedido);
+                        await _pedidoService.AtualizaPedido(pedido);
                     }
 
                     if (total > drone.AUTONOMIA_MAXIMA)
@@ -89,7 +89,7 @@ namespace Devboost.DroneDelivery.DomainService
                         drone.DataAtualizacao = DateTime.Now;
                         await  _dronesRepository.Atualizar(drone);
                         pedido.Status = PedidoStatus.Entregue;
-                        await _pedidoService.Atualizar(pedido);
+                        await _pedidoService.AtualizaPedido(pedido);
                     }
                     
                     break;

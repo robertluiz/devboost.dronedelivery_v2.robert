@@ -60,7 +60,7 @@ namespace Devboost.DroneDelivery.DomainService
 
         public async Task AtualizaPedido(PedidoEntity pedido)
         {
-            return await _pedidosRepository.Atualizar(pedido);
+           await _pedidosRepository.Atualizar(pedido);
         }
     }
 }
