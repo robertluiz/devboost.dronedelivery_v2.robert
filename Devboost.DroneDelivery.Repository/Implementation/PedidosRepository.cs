@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
@@ -22,34 +23,34 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			_configuracoes = config;
 		}
 
-		public List<PedidoEntity> GetAll()
+		public async Task<List<PedidoEntity>> GetAll()
 		{
 			using (SqlConnection conexao = new SqlConnection(
 				_configuracoes.GetConnectionString(_configConnectionString)))
 			{
 
-                var list = conexao.GetAll<Pedido>();
+                var list = await conexao.GetAllAsync<Pedido>();
 
-                List<PedidoEntity> newListD = new List<PedidoEntity>();
-
-                foreach (var item in list)
-                {
-                    PedidoEntity d = new PedidoEntity()
-                    {
-                        Id = item.Id,
-                        Status = (PedidoStatus)item.Status,
-                        DroneId = item.DroneId,
-                        DataHora = item.DataHora,
-                        Latitude = item.Latitude,
-                        Longitude = item.Longitude,
-                        PesoGramas = item.Peso         
-                    };
-
-                    newListD.Add(d);
-                }                
-				return newListD.AsList();
+                return ConvertListModelToModelEntity(list.AsList());
 			}
 		}
+
+        public async Task<PedidoEntity> GetByDroneID(int droneID)
+        {
+            using (SqlConnection conexao = new SqlConnection(
+                _configuracoes.GetConnectionString(_configConnectionString)))
+            {
+                var p = await conexao.QuerySingleAsync<Pedido>(
+                    @"SELECT *
+                    FROM dbo.Pedido
+                    WHERE DroneId = @droneID
+                    AND Status = 'PendenteEntrega' ",
+                    new { Nome = droneID }
+                );
+
+                return ConvertModelToModelEntity(p);
+            }
+        }
 
         public void Inserir(PedidoEntity pedido)
         {
@@ -74,6 +75,37 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
+
+        protected List<PedidoEntity> ConvertListModelToModelEntity(List<Pedido> listPedido)
+        {
+
+            List<PedidoEntity> newListD = new List<PedidoEntity>();
+
+            foreach (var item in listPedido)
+            {
+                newListD.Add(ConvertModelToModelEntity(item));
+            }
+            return newListD;
+
+        }
+
+        protected PedidoEntity ConvertModelToModelEntity(Pedido pedido)
+        {
+
+            PedidoEntity p = new PedidoEntity()
+            {
+                Id = pedido.Id,
+                Status = (PedidoStatus)pedido.Status,
+                DroneId = pedido.DroneId,
+                DataHora = pedido.DataHora,
+                Latitude = pedido.Latitude,
+                Longitude = pedido.Longitude,
+                PesoGramas = pedido.Peso
+            };
+            
+            return p;
+
+        }
 
     }
 }

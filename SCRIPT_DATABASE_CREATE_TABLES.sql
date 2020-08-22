@@ -1,4 +1,6 @@
-CREATE DATABASE [DroneDelivery];
+--DROP DATABASE [DroneDelivery]
+
+CREATE DATABASE [DroneDelivery]
 GO
 
 USE [DroneDelivery]
@@ -34,6 +36,7 @@ CREATE TABLE [dbo].[Pedido](
 	[Latitude] [float] NOT NULL,
 	[Longitude] [float] NOT NULL,
 	[DataHora] [datetime] NOT NULL,
+	[Status] varchar(20) NULL, /* PendenteEntrega, EmTransito, Entregue */
 	[DroneId] [int] NULL,
  CONSTRAINT [PK_Pedido] PRIMARY KEY CLUSTERED 
 (
@@ -47,6 +50,7 @@ GO
 ALTER TABLE [dbo].[Pedido] CHECK CONSTRAINT [FK_Pedido_Drone]
 GO
 
+/* INSERIR DADOS */
 insert into [Drone]
 values(1, 5, 20, 35, 5, 'EmTransito', getdate())
 insert into [Drone]
@@ -55,9 +59,11 @@ insert into [Drone]
 values(3, 5, 20, 35, 5, 'Carregando', getdate())
 
 insert into [Pedido]
-values(NEWID(), 5, geography::Point(-23.596864, -46.685760, 4326), -23.596864, -46.685760, getdate(), 1)
+values(NEWID(), 5, geography::Point(-23.596864, -46.685760, 4326), -23.596864, -46.685760, getdate(), 'PendenteEntrega', 1)
 
+/*
 Select * From Drone
 Select * From Pedido
 
---SELECT geography::Point(-23.596864, -46.685760, 4326)
+SELECT geography::Point(-23.596864, -46.685760, 4326)
+*/

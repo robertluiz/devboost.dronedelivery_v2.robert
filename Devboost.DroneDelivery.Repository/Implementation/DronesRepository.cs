@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
@@ -23,30 +24,30 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			_configuracoes = config;
 		}
 
-		public List<DroneEntity> GetAll()
+		public async Task<List<DroneEntity>> GetAll()
 		{
 			using (SqlConnection conexao = new SqlConnection(
 				_configuracoes.GetConnectionString(_configConnectionString)))
 			{
-				List<Drone> list = conexao.GetAll<Drone>().AsList();
+				var list = await conexao.GetAllAsync<Drone>();
                 
-                return ConvertModelToModelEntity(list);
+                return ConvertListModelToModelEntity(list.AsList());
 			}
 		}
 
-        public List<DroneEntity> GetByStatus(string status)
+        public async Task<List<DroneEntity>> GetByStatus(string status)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
             {
-                List<Drone> list = conexao.Query<Drone>(
+                var list = await conexao.QueryAsync<Drone>(
                     "SELECT * " +
                     "FROM dbo.Drone " +
                     "WHERE Status = @Status",
                     new { Nome = status }
-                ).AsList();
+                );
 
-                return ConvertModelToModelEntity(list);
+                return ConvertListModelToModelEntity(list.AsList());
             }
         }
 
@@ -67,28 +68,36 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
-        protected List<DroneEntity> ConvertModelToModelEntity(List<Drone> listDrone)        {
+        protected List<DroneEntity> ConvertListModelToModelEntity(List<Drone> listDrone)
+        {
 
             List<DroneEntity> newListD = new List<DroneEntity>();
 
             foreach (var item in listDrone)
             {
-                DroneEntity d = new DroneEntity()
-                {
-                    Id = item.Id,
-                    Status = (DroneStatus)item.Status,
-                    AutonomiaMinitos = item.Autonomia,
-                    CapacidadeGamas = item.Capacidade,
-                    VelocidadeKmH = item.Velocidade,
-                    DataAtualizacao = item.DataAtualizacao
-                };
-
-                newListD.Add(d);
+                newListD.Add(ConvertModelToModelEntity(item));
             }
             return newListD;
 
         }
-        
+
+        protected DroneEntity ConvertModelToModelEntity(Drone drone)
+        {
+
+            DroneEntity p = new DroneEntity()
+            {
+                Id = drone.Id,
+                Status = (DroneStatus)drone.Status,
+                AutonomiaMinitos = drone.Autonomia,
+                CapacidadeGamas = drone.Capacidade,
+                VelocidadeKmH = drone.Velocidade,
+                DataAtualizacao = drone.DataAtualizacao
+            };
+
+            return p;
+
+        }
+
 
         //public IEnumerable<DroneModel> ObterTodos()
         //{
