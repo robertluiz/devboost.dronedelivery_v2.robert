@@ -9,15 +9,27 @@
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="Controllers\Pedido.cs" />
   </ItemGroup>
-
+  
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <ProjectReference>
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  
   <ItemGroup>
-    <ProjectReference Include="..\Devboost.DroneDelivery.DomainService\Devboost.DroneDelivery.DomainService.csproj" />
     <ProjectReference Include="..\Devboost.DroneDelivery.Domain\Devboost.DroneDelivery.Domain.csproj" />
-    <ProjectReference Include="..\Devboost.DroneDelivery.Repository\Devboost.DroneDelivery.Repository.csproj" />
+    <ProjectReference Include="..\Devboost.DroneDelivery.IoC\Devboost.DroneDelivery.IoC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Dapper.Contrib" Version="2.0.35" />
   </ItemGroup>
 
 

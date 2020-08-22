@@ -4,11 +4,11 @@ using Devboost.DroneDelivery.Domain.Entities;
 using Devboost.DroneDelivery.Domain.Enums;
 using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Repository.Models;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {

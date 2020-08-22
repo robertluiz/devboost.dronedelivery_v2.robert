@@ -13,10 +13,11 @@ namespace Devboost.DroneDelivery.DomainService
     public class DroneService : IDroneService
     {
         private readonly IDronesRepository _dronesRepository;
-        private readonly IPedidoService _pedidoService;
-        public DroneService(IDronesRepository dronesRepository)
+        private readonly IPedidosRepository _pedidosRepository;
+        public DroneService(IDronesRepository dronesRepository, IPedidosRepository pedidosRepository)
         {
             _dronesRepository = dronesRepository;
+            _pedidosRepository = pedidosRepository;
         }
 
         public async Task<List<ConsultaDronePedidoDTO>> ConsultaDrone()
@@ -34,7 +35,7 @@ namespace Devboost.DroneDelivery.DomainService
         private async Task<ConsultaDronePedidoDTO> RetornConsultaDronePedido(DroneEntity drone)
         {
             
-            var pedido = await _pedidoService.PedidoPorIdDrone(drone.Id);
+            var pedido = await _pedidosRepository.GetByDroneID(drone.Id);
             var idPedido = pedido == null ? (Guid?) null : pedido.Id;
             return new ConsultaDronePedidoDTO
             {
@@ -73,14 +74,14 @@ namespace Devboost.DroneDelivery.DomainService
                 case DroneStatus.Pronto:
                     break;
                 case DroneStatus.EmTransito:
-                    var pedido =  await _pedidoService.PedidoPorIdDrone(drone.Id);
+                    var pedido = await _pedidosRepository.GetByDroneID(drone.Id);
                     if (total > drone.AUTONOMIA_RECARGA)
                     {
                         drone.Status = DroneStatus.Pronto;
                         drone.DataAtualizacao = DateTime.Now;
                         await _dronesRepository.Atualizar(drone);
                         pedido.Status = PedidoStatus.Entregue;
-                        await _pedidoService.AtualizaPedido(pedido);
+                        await _pedidosRepository.Atualizar(pedido);
                     }
 
                     if (total > drone.AUTONOMIA_MAXIMA)
@@ -89,7 +90,7 @@ namespace Devboost.DroneDelivery.DomainService
                         drone.DataAtualizacao = DateTime.Now;
                         await  _dronesRepository.Atualizar(drone);
                         pedido.Status = PedidoStatus.Entregue;
-                        await _pedidoService.AtualizaPedido(pedido);
+                        await _pedidosRepository.Atualizar(pedido);
                     }
                     
                     break;

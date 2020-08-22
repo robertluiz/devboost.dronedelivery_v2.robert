@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devboost.DroneDelivery.Doma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devboost.DroneDelivery.Repository", "Devboost.DroneDelivery.Repository\Devboost.DroneDelivery.Repository.csproj", "{E44FAB15-B9B1-4583-ADCC-7D1B0EC5B72F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devboost.DroneDelivery.IoC", "Devboost.DroneDelivery.IoC\Devboost.DroneDelivery.IoC.csproj", "{BA14E1AC-3CF9-440E-BBFB-7358497B51B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E44FAB15-B9B1-4583-ADCC-7D1B0EC5B72F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E44FAB15-B9B1-4583-ADCC-7D1B0EC5B72F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E44FAB15-B9B1-4583-ADCC-7D1B0EC5B72F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA14E1AC-3CF9-440E-BBFB-7358497B51B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA14E1AC-3CF9-440E-BBFB-7358497B51B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA14E1AC-3CF9-440E-BBFB-7358497B51B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA14E1AC-3CF9-440E-BBFB-7358497B51B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
