@@ -23,4 +23,8 @@
     <None Remove="Interface\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Devboost.DroneDelivery.Domain\Devboost.DroneDelivery.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

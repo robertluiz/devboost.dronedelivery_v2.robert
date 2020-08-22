@@ -13,10 +13,10 @@ namespace Devboost.DroneDelivery.Repository.Models
 
         //public DbGeography LatLong { get; set; }        
 
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public int Status { get; set; }
         public DateTime? DataHora { get; set; }
-        public Guid DroneId { get; set; }
+        public int DroneId { get; set; }
     }
 }
