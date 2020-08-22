@@ -14,6 +14,8 @@ CREATE TABLE [dbo].[Drone](
 	[Velocidade] [int] NOT NULL,
 	[Autonomia] [int] NOT NULL,
 	[Carga] [int] NOT NULL,
+	[Status] varchar(20) NULL,
+	[DataAtualizacao] [datetime] NULL	
  CONSTRAINT [PK_Drone] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -46,11 +48,14 @@ ALTER TABLE [dbo].[Pedido] CHECK CONSTRAINT [FK_Pedido_Drone]
 GO
 
 insert into [Drone]
-values(1, 5, 20, 30, 5)
+values(1, 5, 20, 35, 5, 'EmTransito', getdate())
+insert into [Drone]
+values(2, 5, 20, 35, 5, 'Pronto', getdate())
+insert into [Drone]
+values(3, 5, 20, 35, 5, 'Carregando', getdate())
 
 insert into [Pedido]
 values(NEWID(), 5, geography::Point(-23.596864, -46.685760, 4326), -23.596864, -46.685760, getdate(), 1)
-
 
 Select * From Drone
 Select * From Pedido

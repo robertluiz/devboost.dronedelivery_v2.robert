@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
+using Devboost.DroneDelivery.Domain.Entities;
+using Devboost.DroneDelivery.Domain.Enums;
 using Devboost.DroneDelivery.Repository.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -19,13 +21,32 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			_configuracoes = config;
 		}
 
-		public List<Pedido> GetAll()
+		public List<PedidoEntity> GetAll()
 		{
 			using (SqlConnection conexao = new SqlConnection(
 				_configuracoes.GetConnectionString(_configConnectionString)))
 			{
-				var list = conexao.GetAll<Pedido>();
-				return list.AsList();
+
+                var list = conexao.GetAll<Pedido>();
+
+                List<PedidoEntity> newListD = new List<PedidoEntity>();
+
+                foreach (var item in list)
+                {
+                    PedidoEntity d = new PedidoEntity()
+                    {
+                        Id = item.Id,
+                        Status = (PedidoStatus)item.Status,
+                        DroneId = item.DroneId,
+                        DataHora = item.DataHora,
+                        Latitude = item.Latitude,
+                        Longitude = item.Longitude,
+                        PesoGramas = item.Peso         
+                    };
+
+                    newListD.Add(d);
+                }                
+				return newListD.AsList();
 			}
 		}
 
