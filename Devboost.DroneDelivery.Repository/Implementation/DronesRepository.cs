@@ -68,6 +68,15 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
+        public void Incluir(DroneEntity drone)
+        {
+            using (SqlConnection conexao = new SqlConnection(
+                _configuracoes.GetConnectionString(_configConnectionString)))
+            {
+                conexao.InsertAsync<DroneEntity>(drone);
+            }
+        }
+
         protected List<DroneEntity> ConvertListModelToModelEntity(List<Drone> listDrone)
         {
 

@@ -75,6 +75,32 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
+        public void Atualizar(PedidoEntity pedido)
+        {
+            using (SqlConnection conexao = new SqlConnection(
+                _configuracoes.GetConnectionString(_configConnectionString)))
+            {
+                var dataAtualizacao = DateTime.Now;
+
+                var query = @"UPDATE Dbo.Pedido		
+			        SET Status = @status, DataHora = @DataHora
+                    WHERE Id = @id
+                ";
+
+                conexao.Execute(query, new { pedido.Status, pedido.DataHora }
+              );
+            }
+        }
+
+        public void Incluir(PedidoEntity pedido)
+        {
+            using (SqlConnection conexao = new SqlConnection(
+                _configuracoes.GetConnectionString(_configConnectionString)))
+            {
+                conexao.InsertAsync<PedidoEntity>(pedido);
+            }
+        }
+
 
         protected List<PedidoEntity> ConvertListModelToModelEntity(List<Pedido> listPedido)
         {
