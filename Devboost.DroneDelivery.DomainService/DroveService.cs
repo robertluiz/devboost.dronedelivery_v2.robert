@@ -37,8 +37,8 @@ namespace Devboost.DroneDelivery.DomainService
         }
         private void AtualizaStatusDrones(DroneEntity drone)
         {
-            drone.UltimaAlteracao ??= DateTime.Now;
-            var total = (drone.UltimaAlteracao - DateTime.Now).Value.TotalMinutes;
+            drone.DataAtualizacao ??= DateTime.Now;
+            var total = (drone.DataAtualizacao - DateTime.Now).Value.TotalMinutes;
             
             switch (drone.Status)
             {
@@ -49,14 +49,14 @@ namespace Devboost.DroneDelivery.DomainService
                     if (total > drone.AUTONOMIA_RECARGA)
                     {
                         drone.Status = DroneStatus.Pronto;
-                        drone.UltimaAlteracao = DateTime.Now;
+                        drone.DataAtualizacao = DateTime.Now;
                        // _dronesRepository.AtualizaR(drone);
                     }
 
                     if (total > drone.AUTONOMIA_MAXIMA)
                     {
                         drone.Status = DroneStatus.Carregando;
-                        drone.UltimaAlteracao = DateTime.Now;
+                        drone.DataAtualizacao = DateTime.Now;
                         // _dronesRepository.AtualizaR(drone);
                     }
                     
@@ -65,13 +65,13 @@ namespace Devboost.DroneDelivery.DomainService
                     if (total > drone.TEMPO_RECARGA_MINUTOS)
                     {
                         drone.Status = DroneStatus.Pronto;
-                        drone.UltimaAlteracao = DateTime.Now;
+                        drone.DataAtualizacao = DateTime.Now;
                         // _dronesRepository.AtualizaR(drone);
                     }
                     break;
                 default:
                     drone.Status = DroneStatus.Pronto;
-                    drone.UltimaAlteracao = DateTime.Now;
+                    drone.DataAtualizacao = DateTime.Now;
                     // _dronesRepository.AtualizaR(drone);
                     break;
             }
