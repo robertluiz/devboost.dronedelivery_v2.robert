@@ -8,6 +8,7 @@ namespace Devboost.DroneDelivery.Domain.Interfaces.Services
     public interface IPedidoService
     {
         Task<bool> InserirPedido(PedidoParam Pedido);
-        Task<Guid> IdPedidoPorIdDrone(int DroneId);
+        Task<PedidoEntity> PedidoPorIdDrone(int DroneId);
+        Task AtualizaPedido(PedidoEntity pedido);
     }
 }

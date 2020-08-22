@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.Entities;
+using Devboost.DroneDelivery.Domain.Enums;
 using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Domain.Interfaces.Services;
 using Devboost.DroneDelivery.Domain.Params;
@@ -36,17 +37,30 @@ namespace Devboost.DroneDelivery.DomainService
                 return false;
 
             var drone = await _droneService.SelecionarDrone();
+            if (drone == null)
+            {
+                novoPedido.Status = PedidoStatus.PendenteEntrega;
+                await _pedidosRepository.Inserir(novoPedido);
+                return true;
+            }
+                
             novoPedido.Drone = drone;
             novoPedido.DroneId = drone.Id;
-           // await _pedidosRepository.Inserir(novoPedido);
+            novoPedido.Status = PedidoStatus.EmTransito;
+           await _pedidosRepository.Inserir(novoPedido);
             await _droneService.AtualizaDrone(drone);
             
            return true;
         }
 
-        public async Task<Guid> IdPedidoPorIdDrone(int DroneId)
+        public async Task<PedidoEntity> PedidoPorIdDrone(int droneId)
         {
-            throw new NotImplementedException();
+          return  await _pedidosRepository.GetByDroneID(droneId);
+        }
+
+        public async Task AtualizaPedido(PedidoEntity pedido)
+        {
+            return await _pedidosRepository.Atualizar(pedido);
         }
     }
 }

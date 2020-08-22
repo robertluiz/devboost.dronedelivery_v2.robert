@@ -52,7 +52,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             }
         }
 
-        public void Inserir(PedidoEntity pedido)
+        public async Task Inserir(PedidoEntity pedido)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
@@ -70,12 +70,12 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 				@DroneId
 				)";
 
-                conexao.Execute(query, new { Id, pedido.PesoGramas, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
+                await conexao.ExecuteAsync(query, new { Id, pedido.PesoGramas, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
               );
             }
         }
 
-        public void Atualizar(PedidoEntity pedido)
+        public async Task Atualizar(PedidoEntity pedido)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
@@ -87,17 +87,17 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     WHERE Id = @id
                 ";
 
-                conexao.Execute(query, new { pedido.Status, pedido.DataHora }
+                await conexao.ExecuteAsync(query, new { pedido.Status, pedido.DataHora }
               );
             }
         }
 
-        public void Incluir(PedidoEntity pedido)
+        public async Task Incluir(PedidoEntity pedido)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
             {
-                conexao.InsertAsync<PedidoEntity>(pedido);
+                await conexao.InsertAsync<PedidoEntity>(pedido);
             }
         }
 

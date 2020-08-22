@@ -8,8 +8,8 @@ namespace Devboost.DroneDelivery.Domain.Interfaces.Repository
     {
         Task<List<PedidoEntity>> GetAll();
         Task<PedidoEntity> GetByDroneID(int droneID);
-        void Inserir(PedidoEntity pedido);
-        void Atualizar(PedidoEntity pedido);
-        void Incluir(PedidoEntity pedido);
+        Task Inserir(PedidoEntity pedido);
+        Task Atualizar(PedidoEntity pedido);
+        Task Incluir(PedidoEntity pedido);
     }
 }
