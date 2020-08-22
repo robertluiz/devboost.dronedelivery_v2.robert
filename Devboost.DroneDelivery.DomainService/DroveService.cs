@@ -20,7 +20,10 @@ namespace Devboost.DroneDelivery.DomainService
 
         public async Task<List<ConsultaDronePedidoDTO>> ConsultaDrone()
         {
-            throw new System.NotImplementedException();
+           // var ListaDrones = await _dronesRepository.getAll();
+           AtualizaStatusDrones(ListaDrones);
+           
+           //return await _dronesRepository.getAll();
         }
 
         public async Task<DroneEntity> SelecionarDrone()
@@ -29,6 +32,11 @@ namespace Devboost.DroneDelivery.DomainService
             var ListaDrones = new List<DroneEntity>();
             AtualizaStatusDrones(ListaDrones);
             return ListaDrones[0];
+        }
+
+        public async Task AtualizaDrone(DroneEntity drone)
+        {
+            //await _dronesRepository.Atualizar(drone);
         }
 
         private void AtualizaStatusDrones(List<DroneEntity> lista)
@@ -50,14 +58,14 @@ namespace Devboost.DroneDelivery.DomainService
                     {
                         drone.Status = DroneStatus.Pronto;
                         drone.DataAtualizacao = DateTime.Now;
-                       // _dronesRepository.AtualizaR(drone);
+                       // _dronesRepository.Atualizar(drone);
                     }
 
                     if (total > drone.AUTONOMIA_MAXIMA)
                     {
                         drone.Status = DroneStatus.Carregando;
                         drone.DataAtualizacao = DateTime.Now;
-                        // _dronesRepository.AtualizaR(drone);
+                        // _dronesRepository.Atualizar(drone);
                     }
                     
                     break;
@@ -66,7 +74,7 @@ namespace Devboost.DroneDelivery.DomainService
                     {
                         drone.Status = DroneStatus.Pronto;
                         drone.DataAtualizacao = DateTime.Now;
-                        // _dronesRepository.AtualizaR(drone);
+                        // _dronesRepository.Atualizar(drone);
                     }
                     break;
                 default:
