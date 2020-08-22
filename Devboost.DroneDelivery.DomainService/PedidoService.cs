@@ -43,5 +43,10 @@ namespace Devboost.DroneDelivery.DomainService
             
            return true;
         }
+
+        public async Task<Guid> IdPedidoPorIdDrone(int DroneId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.DTOs;
 using Devboost.DroneDelivery.Domain.Entities;
@@ -12,7 +13,7 @@ namespace Devboost.DroneDelivery.DomainService
     public class DroveService : IDroneService
     {
         private readonly IDronesRepository _dronesRepository;
-
+        private readonly IPedidoService _pedidoService;
         public DroveService(IDronesRepository dronesRepository)
         {
             _dronesRepository = dronesRepository;
@@ -20,12 +21,29 @@ namespace Devboost.DroneDelivery.DomainService
 
         public async Task<List<ConsultaDronePedidoDTO>> ConsultaDrone()
         {
-           // var ListaDrones = await _dronesRepository.getAll();
+           var ListaDrones = await _dronesRepository.GetAll();
            AtualizaStatusDrones(ListaDrones);
-           
+
+           return  _dronesRepository.GetAll().Select(async d => await RetornConsultaDronePedido(d))
+               .ToList()
+               .Select(c => c.Result)
+               .ToList();
+
            //return await _dronesRepository.getAll();
         }
 
+        private async Task<ConsultaDronePedidoDTO> RetornConsultaDronePedido(DroneEntity drone)
+        {
+            var idPedido = await _pedidoService.IdPedidoPorIdDrone(drone.Id);
+            return new ConsultaDronePedidoDTO
+            {
+
+                IdDrone = drone.Id,
+                Situacao = drone.Status.ToString(),
+                PedidoId = idPedido
+            };
+        }
+        
         public async Task<DroneEntity> SelecionarDrone()
         {
             //var ListaDrones = await _dronesRepository.getAll();
@@ -58,7 +76,7 @@ namespace Devboost.DroneDelivery.DomainService
                     {
                         drone.Status = DroneStatus.Pronto;
                         drone.DataAtualizacao = DateTime.Now;
-                       // _dronesRepository.Atualizar(drone);
+                        // _dronesRepository.Atualizar(drone);
                     }
 
                     if (total > drone.AUTONOMIA_MAXIMA)
