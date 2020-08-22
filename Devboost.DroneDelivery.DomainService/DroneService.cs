@@ -14,9 +14,10 @@ namespace Devboost.DroneDelivery.DomainService
     {
         private readonly IDronesRepository _dronesRepository;
         private readonly IPedidoService _pedidoService;
-        public DroneService(IDronesRepository dronesRepository)
+        public DroneService(IDronesRepository dronesRepository, IPedidoService pedidoService)
         {
             _dronesRepository = dronesRepository;
+            _pedidoService = pedidoService;
         }
 
         public async Task<List<ConsultaDronePedidoDTO>> ConsultaDrone()
