@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Devboost.DroneDelivery.Domain\Devboost.DroneDelivery.Domain.csproj" />
+    <ProjectReference Include="..\Devboost.DroneDelivery.Repository\Devboost.DroneDelivery.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>

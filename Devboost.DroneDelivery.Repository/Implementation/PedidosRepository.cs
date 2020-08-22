@@ -2,6 +2,7 @@
 using Dapper.Contrib.Extensions;
 using Devboost.DroneDelivery.Domain.Entities;
 using Devboost.DroneDelivery.Domain.Enums;
+using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Repository.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,7 +11,7 @@ using System.Data.SqlClient;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
-    public class PedidosRepository
+    public class PedidosRepository : IPedidosRepository
     {
 
 		protected readonly string _configConnectionString = "DroneDelivery";

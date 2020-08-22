@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Devboost.DroneDelivery.Domain.Interfaces.Repository;
+using Devboost.DroneDelivery.Repository.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,8 +29,8 @@ namespace Devboost.DroneDelivery.Api
         {
             services.AddSwaggerGen();
             services.AddControllers();
-            //services.AddTransient<IDronesRepository, DronesRepository>(); //Transiente faz com que seja criado um objeto para cada requisição realizada para essa interface, afim de evitar concorrência
-            //services.AddTransient<IPedidosRepository, PedidosRepository>(); //Transiente faz com que seja criado um objeto para cada requisição realizada para essa interface, afim de evitar concorrência
+            services.AddTransient<IDronesRepository, DronesRepository>(); //Transiente faz com que seja criado um objeto para cada requisição realizada para essa interface, afim de evitar concorrência
+            services.AddTransient<IPedidosRepository, PedidosRepository>(); //Transiente faz com que seja criado um objeto para cada requisição realizada para essa interface, afim de evitar concorrência
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
