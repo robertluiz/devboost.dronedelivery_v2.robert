@@ -10,11 +10,11 @@ using Devboost.DroneDelivery.Domain.Interfaces.Services;
 
 namespace Devboost.DroneDelivery.DomainService
 {
-    public class DroveService : IDroneService
+    public class DroneService : IDroneService
     {
         private readonly IDronesRepository _dronesRepository;
         private readonly IPedidoService _pedidoService;
-        public DroveService(IDronesRepository dronesRepository)
+        public DroneService(IDronesRepository dronesRepository)
         {
             _dronesRepository = dronesRepository;
         }
