@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
@@ -23,30 +24,30 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 			_configuracoes = config;
 		}
 
-		public List<DroneEntity> GetAll()
+		public async Task<List<DroneEntity>> GetAll()
 		{
 			using (SqlConnection conexao = new SqlConnection(
 				_configuracoes.GetConnectionString(_configConnectionString)))
 			{
-				List<Drone> list = conexao.GetAll<Drone>().AsList();
+				var list = await conexao.GetAllAsync<Drone>();
                 
-                return ConvertModelToModelEntity(list);
+                return ConvertModelToModelEntity(list.AsList());
 			}
 		}
 
-        public List<DroneEntity> GetByStatus(string status)
+        public async Task<List<DroneEntity>> GetByStatus(string status)
         {
             using (SqlConnection conexao = new SqlConnection(
                 _configuracoes.GetConnectionString(_configConnectionString)))
             {
-                List<Drone> list = conexao.Query<Drone>(
+                var list = await conexao.QueryAsync<Drone>(
                     "SELECT * " +
                     "FROM dbo.Drone " +
                     "WHERE Status = @Status",
                     new { Nome = status }
-                ).AsList();
+                );
 
-                return ConvertModelToModelEntity(list);
+                return ConvertModelToModelEntity(list.AsList());
             }
         }
 

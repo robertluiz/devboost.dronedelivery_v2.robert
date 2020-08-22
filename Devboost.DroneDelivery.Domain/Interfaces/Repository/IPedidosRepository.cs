@@ -1,11 +1,13 @@
 ﻿using Devboost.DroneDelivery.Domain.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Domain.Interfaces.Repository
 {
     public interface IPedidosRepository
     {
-        List<PedidoEntity> GetAll();
+        Task<List<PedidoEntity>> GetAll();
+        Task<List<PedidoEntity>> GetByDroneID(int droneID);
         void Inserir(PedidoEntity pedido);
     }
 }
