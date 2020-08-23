@@ -67,29 +67,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
              await conexao.UpdateAsync(model);
          
         }
-
-        private List<PedidoEntity> ConvertListModelToModelEntity(IEnumerable<Pedido> listPedido)
-        {
-            return listPedido.Select(ConvertModelToModelEntity).ToList();
-        }
-
-        private static PedidoEntity ConvertModelToModelEntity(Pedido pedido)
-        {
-
-            var p = new PedidoEntity
-            {
-                Id = pedido.Id,
-                Status = Enum.Parse<PedidoStatus>(pedido.Status),
-                DroneId = pedido.DroneId,
-                DataHora = pedido.DataHora,
-                Latitude = pedido.Latitude,
-                Longitude = pedido.Longitude,
-                PesoGramas = pedido.Peso
-            };
-            
-            return p;
-
-        }
+        
 
     }
 }

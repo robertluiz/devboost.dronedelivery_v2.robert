@@ -28,7 +28,10 @@ namespace Devboost.DroneDelivery.Repository.Implementation
         public async Task<List<DroneEntity>> GetAll()
         {
             using var conexao= await _dbFactory.OpenAsync();
-            conexao.CreateTableIfNotExists<Drone>();
+            if (conexao.CreateTableIfNotExists<Drone>())
+            {
+                await conexao.InsertAllAsync(SeedDrone());
+            }
             var list = await conexao.SelectAsync<Drone>();
                 
             return list.ConvertTo<List<DroneEntity>>();
@@ -61,26 +64,76 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             conexao.CreateTableIfNotExists<Drone>();
             await conexao.InsertAsync(model);
         }
+        
 
-        private static List<DroneEntity> ConvertListModelToModelEntity(List<Drone> listDrone)
-        {
-            return listDrone.Select(ConvertModelToModelEntity).ToList();
-        }
-
-        private static DroneEntity ConvertModelToModelEntity(Drone drone)
+        private static List<Drone> SeedDrone()
         {
 
-            var p = new DroneEntity()
-            {
-                Id = drone.Id,
-                Status = Enum.Parse<DroneStatus>(drone.Status),
-                AutonomiaMinitos = drone.Autonomia,
-                CapacidadeGamas = drone.Capacidade,
-                VelocidadeKmH = drone.Velocidade,
-                DataAtualizacao = drone.DataAtualizacao
+            return new List<Drone>{
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
+                new Drone
+                {
+                    Id = Guid.NewGuid(),
+                    Status = DroneStatus.Pronto.ToString(),
+                    Autonomia = 35,
+                    Capacidade = 12000,
+                    Velocidade = 60,
+                    DataAtualizacao = DateTime.Now
+                },
             };
-
-            return p;
 
         }
         
