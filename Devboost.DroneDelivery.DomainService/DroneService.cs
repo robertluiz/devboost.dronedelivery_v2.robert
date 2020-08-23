@@ -80,7 +80,7 @@ namespace Devboost.DroneDelivery.DomainService
                         drone.Status = DroneStatus.Pronto;
                         drone.DataAtualizacao = DateTime.Now;
                         await _dronesRepository.Atualizar(drone);
-                        pedido.Status = PedidoStatus.Entregue;
+                        pedido.Status = PedidoStatus.Entregue.ToString();
                         await _pedidosRepository.Atualizar(pedido);
                     }
 
@@ -89,7 +89,7 @@ namespace Devboost.DroneDelivery.DomainService
                         drone.Status = DroneStatus.Carregando;
                         drone.DataAtualizacao = DateTime.Now;
                         await  _dronesRepository.Atualizar(drone);
-                        pedido.Status = PedidoStatus.Entregue;
+                        pedido.Status = PedidoStatus.Entregue.ToString();
                         await _pedidosRepository.Atualizar(pedido);
                     }
                     
