@@ -14,25 +14,27 @@
   </ItemDefinitionGroup>
   
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="Dapper.Contrib" Version="2.0.35" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
+    <PackageReference Include="ServiceStack.OrmLite.SqlServer" Version="5.9.2" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Interface\**" />
     <Compile Remove="Context\**" />
+    <Compile Remove="RepoUtils\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Interface\**" />
     <EmbeddedResource Remove="Context\**" />
+    <EmbeddedResource Remove="RepoUtils\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Interface\**" />
     <None Remove="Context\**" />
+    <None Remove="RepoUtils\**" />
   </ItemGroup>
 
   <ItemGroup>

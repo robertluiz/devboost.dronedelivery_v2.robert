@@ -1,127 +1,85 @@
-﻿using Dapper;
-using Dapper.Contrib.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.Entities;
 using Devboost.DroneDelivery.Domain.Enums;
 using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Repository.Models;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
+using ServiceStack;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 
 namespace Devboost.DroneDelivery.Repository.Implementation
 {
     public class PedidosRepository : IPedidosRepository
     {
+        private readonly string _configConnectionString = "DroneDelivery";
+        private readonly IDbConnectionFactoryExtended _dbFactory; 
 
-		protected readonly string _configConnectionString = "DroneDelivery";
-
-		private IConfiguration _configuracoes;
-		public PedidosRepository(IConfiguration config)
-		{
-			_configuracoes = config;
-		}
-
-		public async Task<List<PedidoEntity>> GetAll()
-		{
-			using (SqlConnection conexao = new SqlConnection(
-				_configuracoes.GetConnectionString(_configConnectionString)))
-			{
-
-                var list = await conexao.GetAllAsync<Pedido>();
-
-                return ConvertListModelToModelEntity(list.AsList());
-			}
-		}
-
-        public async Task<PedidoEntity> GetByDroneID(int droneID)
+        public PedidosRepository(IConfiguration config)
         {
-            using (SqlConnection conexao = new SqlConnection(
-                _configuracoes.GetConnectionString(_configConnectionString)))
-            {
-                var p = await conexao.QuerySingleAsync<Pedido>(
-                    @"SELECT *
-                    FROM dbo.Pedido
-                    WHERE DroneId = @droneID
-                    AND Status = 'PendenteEntrega' ",
-                    new { Nome = droneID }
-                );
+            _dbFactory = new OrmLiteConnectionFactory(
+                config.GetConnectionString(_configConnectionString),  
+                SqlServerDialect.Provider);
+        }
 
-                return ConvertModelToModelEntity(p);
-            }
+        public async Task<List<PedidoEntity>> GetAll()
+        {
+            using var conexao = await _dbFactory.OpenAsync();
+
+            var list = await conexao.SelectAsync<Pedido>();
+
+            return list.ConvertTo<List<PedidoEntity>>();
+
+        }
+
+        public async Task<PedidoEntity> GetByDroneID(Guid droneId)
+        {
+            using var conexao = await _dbFactory.OpenAsync();
+            conexao.CreateTableIfNotExists<Pedido>();
+            var p = await conexao.SingleAsync<Pedido>(
+                p => 
+                    p.DroneId == droneId 
+                    && p.Status == PedidoStatus.EmTransito.ToString());
+
+            return p.ConvertTo<PedidoEntity>();
+            
         }
 
         public async Task Inserir(PedidoEntity pedido)
         {
-            using (SqlConnection conexao = new SqlConnection(
-                _configuracoes.GetConnectionString(_configConnectionString)))
-            {
+            var model = pedido.ConvertTo<Pedido>();
+            using var conexao = await _dbFactory.OpenAsync();
+            
+            conexao.CreateTableIfNotExists<Pedido>();
+            await conexao.InsertAsync(model);
 
-				var Id = Guid.NewGuid();
-
-				var query = @"INSERT INTO Dbo.Pedido(id, peso, latitude, longitude, datahora, droneId)		
-				VALUES(
-				@Id,
-				@Peso,
-				@Latitude,
-				@Longitude,
-				@DataHora,
-				@DroneId
-				)";
-
-                await conexao.ExecuteAsync(query, new { Id, pedido.PesoGramas, pedido.Latitude, pedido.Longitude, pedido.DataHora, pedido.DroneId }
-              );
-            }
         }
 
         public async Task Atualizar(PedidoEntity pedido)
         {
-            using (SqlConnection conexao = new SqlConnection(
-                _configuracoes.GetConnectionString(_configConnectionString)))
-            {
-                var dataAtualizacao = DateTime.Now;
-
-                var query = @"UPDATE Dbo.Pedido		
-			        SET Status = @status, DataHora = @DataHora
-                    WHERE Id = @id
-                ";
-
-                await conexao.ExecuteAsync(query, new { pedido.Status, pedido.DataHora }
-              );
-            }
+            var model = pedido.ConvertTo<Pedido>();
+            using var conexao = await _dbFactory.OpenAsync();
+            
+             conexao.CreateTableIfNotExists<Pedido>();
+             await conexao.UpdateAsync(model);
+         
         }
 
-        public async Task Incluir(PedidoEntity pedido)
+        private List<PedidoEntity> ConvertListModelToModelEntity(IEnumerable<Pedido> listPedido)
         {
-            using (SqlConnection conexao = new SqlConnection(
-                _configuracoes.GetConnectionString(_configConnectionString)))
-            {
-                await conexao.InsertAsync<PedidoEntity>(pedido);
-            }
+            return listPedido.Select(ConvertModelToModelEntity).ToList();
         }
 
-
-        protected List<PedidoEntity> ConvertListModelToModelEntity(List<Pedido> listPedido)
+        private static PedidoEntity ConvertModelToModelEntity(Pedido pedido)
         {
 
-            List<PedidoEntity> newListD = new List<PedidoEntity>();
-
-            foreach (var item in listPedido)
-            {
-                newListD.Add(ConvertModelToModelEntity(item));
-            }
-            return newListD;
-
-        }
-
-        protected PedidoEntity ConvertModelToModelEntity(Pedido pedido)
-        {
-
-            PedidoEntity p = new PedidoEntity()
+            var p = new PedidoEntity
             {
                 Id = pedido.Id,
-                Status = (PedidoStatus)pedido.Status,
+                Status = Enum.Parse<PedidoStatus>(pedido.Status),
                 DroneId = pedido.DroneId,
                 DataHora = pedido.DataHora,
                 Latitude = pedido.Latitude,

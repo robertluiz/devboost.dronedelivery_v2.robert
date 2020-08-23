@@ -12,7 +12,7 @@ namespace Devboost.DroneDelivery.Domain.Entities
         public DateTime? DataHora { get; set; }
         public PedidoStatus Status { get; set; }
         public DroneEntity Drone { get; set; }
-        public int DroneId { get; set; }
+        public Guid DroneId { get; set; }
         public readonly double DistanciaMaxima = 17;
         public readonly int PesoGamasMaximo = 12000;
 

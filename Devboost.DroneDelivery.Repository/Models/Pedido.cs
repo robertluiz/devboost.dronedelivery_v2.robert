@@ -1,22 +1,23 @@
-﻿using Dapper.Contrib.Extensions;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Devboost.DroneDelivery.Repository.Models
 {
     [Table("dbo.Pedido")]
     public class Pedido
-    {        
+    {
+        public Pedido()
+        {
+            Id = Guid.NewGuid();
+            DataHora = DateTime.Now;
+        }
 
-        [ExplicitKey]
         public Guid Id { get; set; }
-        public int Peso {get; set;}
-
-        //public DbGeography LatLong { get; set; }        
-
+        public int Peso { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public DateTime? DataHora { get; set; }
-        public int DroneId { get; set; }
+        public Guid DroneId { get; set; }
     }
 }

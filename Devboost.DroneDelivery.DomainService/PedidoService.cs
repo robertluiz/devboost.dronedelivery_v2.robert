@@ -53,7 +53,7 @@ namespace Devboost.DroneDelivery.DomainService
            return true;
         }
 
-        public async Task<PedidoEntity> PedidoPorIdDrone(int droneId)
+        public async Task<PedidoEntity> PedidoPorIdDrone(Guid droneId)
         {
           return  await _pedidosRepository.GetByDroneID(droneId);
         }
