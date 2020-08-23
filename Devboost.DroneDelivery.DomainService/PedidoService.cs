@@ -32,23 +32,16 @@ namespace Devboost.DroneDelivery.DomainService
             };
 
             //calculoDistancia
-
             var distancia = GeolocalizacaoService.CalcularDistanciaEmMetro(pedido.Latitude, pedido.Longitude);
 
             if (!novoPedido.ValidaPedido(distancia))
                 return false;
 
-            var drone = await _droneService.SelecionarDrone();
-            if (drone == null)
-            {
-                novoPedido.Status = PedidoStatus.PendenteEntrega.ToString();
-                await _pedidosRepository.Inserir(novoPedido);
-                return true;
-            }
+            var drone = await _droneService.SelecionarDrone(novoPedido);
 
             novoPedido.Drone = drone;
-            novoPedido.DroneId = drone.Id;
-            novoPedido.Status = PedidoStatus.EmTransito.ToString();
+            novoPedido.DroneId = drone != null ? drone.Id : novoPedido.DroneId;
+            novoPedido.Status = PedidoStatus.PendenteEntrega.ToString();
             await _pedidosRepository.Inserir(novoPedido);
             await _droneService.AtualizaDrone(drone);
 
@@ -57,7 +50,7 @@ namespace Devboost.DroneDelivery.DomainService
 
         public async Task<PedidoEntity> PedidoPorIdDrone(Guid droneId)
         {
-            return await _pedidosRepository.GetByDroneID(droneId);
+            return await _pedidosRepository.GetSingleByDroneID(droneId);
         }
 
         public async Task AtualizaPedido(PedidoEntity pedido)
