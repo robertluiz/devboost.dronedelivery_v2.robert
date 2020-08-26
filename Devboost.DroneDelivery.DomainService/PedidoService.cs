@@ -32,9 +32,11 @@ namespace Devboost.DroneDelivery.DomainService
             };
 
             //calculoDistancia
-            var distancia = GeolocalizacaoService.CalcularDistanciaEmMetro(pedido.Latitude, pedido.Longitude);
+            novoPedido.DistanciaDaEntrega = GeolocalizacaoService.CalcularDistanciaEmMetro(pedido.Latitude, pedido.Longitude);
+            //var distanciaEmMilhas = GeolocalizacaoService.distance(pedido.Latitude, pedido.Longitude, 'M');
+            //var distanciaEmMilhasNauticas = GeolocalizacaoService.distance(pedido.Latitude, pedido.Longitude, 'N');
 
-            if (!novoPedido.ValidaPedido(distancia))
+            if (!novoPedido.ValidaPedido())
                 return false;
 
             var drone = await _droneService.SelecionarDrone(novoPedido);

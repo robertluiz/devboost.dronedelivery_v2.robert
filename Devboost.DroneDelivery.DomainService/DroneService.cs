@@ -59,15 +59,9 @@ namespace Devboost.DroneDelivery.DomainService
                 if (!Disponivel(item)) //Se o drone não encontra-se disponível, então pula para verificar a disponibilidade do próximo
                     continue;
 
-                var listDronePedidos = await RetornConsultaDronePedido(item);
+                var listPedidosDrone = await RetornConsultaDronePedido(item);
 
-                if (!TemPedido(listDronePedidos)) //Se o drone ainda não tem pedido, então ele é selecionado
-                {
-                    drone = item;
-                    break;
-                }
-
-                if (SuportaPeso(listDronePedidos, drone.Capacidade, pedido.Peso)) //Se o drone suporta o peso de todos os pedidos, então ele é selecionado
+                if (SuportaPeso(listPedidosDrone, item, pedido) && TemAutonomiaSuficiente(listPedidosDrone, item, pedido)) 
                 {
                     drone = item;
                     break;
@@ -83,16 +77,16 @@ namespace Devboost.DroneDelivery.DomainService
 
             foreach (var item in listaDrones)
             {
-                var listDronePedidos = await RetornConsultaDronePedido(item);
+                var listPedidosDrone = await RetornConsultaDronePedido(item);
 
-                if (!TemPedido(listDronePedidos)) //Se o drone ainda não tem pedido, então ele é selecionado
+                if (!TemPedido(listPedidosDrone)) //Se o drone ainda não tem pedido, então ele não será atualizado o seu status, pois não tem entrega para efetuar
                 {
                     continue;
                 }
 
-                if (listDronePedidos != null)
+                if (listPedidosDrone != null)
                 {
-                    foreach (var p in listDronePedidos.Pedidos)
+                    foreach (var p in listPedidosDrone.Pedidos)
                     {
                         p.Status = PedidoStatus.EmTransito.ToString();
                         await _pedidosRepository.Atualizar(p);
@@ -170,30 +164,45 @@ namespace Devboost.DroneDelivery.DomainService
             return drone.Status.Equals(DroneStatus.Pronto);
         }
 
-        private bool TemPedido(ConsultaDronePedidoDTO listDronePedidos)
+        private bool TemPedido(ConsultaDronePedidoDTO listPedidosDrone)
         {
-            if (listDronePedidos.Pedidos == null || listDronePedidos.Pedidos.Count().Equals(0)) //Se o drone não tem pedidos relacionados, então já pego ele e saio do foreach
+            if (listPedidosDrone.Pedidos == null || listPedidosDrone.Pedidos.Count().Equals(0)) //Se o drone não tem pedidos relacionados, então já pego ele e saio do foreach
             {
                 return false;
             }
             return true;
         }
 
-        private bool SuportaPeso(ConsultaDronePedidoDTO listDronePedidos, int capacidadeDrone, int pesoPedidoNovo)
+        private bool SuportaPeso(ConsultaDronePedidoDTO listDronePedidos, DroneEntity drone, PedidoEntity pedidoNovo)
         {
             bool suporta = false;
 
-            if (listDronePedidos == null)
-                return false;
+            var pesoDeTodosPedidos = listDronePedidos != null && listDronePedidos.Pedidos != null && listDronePedidos.Pedidos.Count > 0 ? (listDronePedidos.Pedidos.Sum(s => s.Peso) + pedidoNovo.Peso) : pedidoNovo.Peso;
 
-            var pesoDeTodosPedidos = listDronePedidos.Pedidos.Sum(s => s.Peso) + pesoPedidoNovo;
-
-            if (pesoDeTodosPedidos <= capacidadeDrone)
+            if (pesoDeTodosPedidos <= drone.Capacidade)
             {
                 suporta = true;
             }
 
             return suporta;
+        }
+
+        private bool TemAutonomiaSuficiente(ConsultaDronePedidoDTO listDronePedidos, DroneEntity drone, PedidoEntity pedidoNovo)
+        {
+            bool temAuto = false;
+
+            var distanciaDeTodosPedidosEmMetros = listDronePedidos != null && listDronePedidos.Pedidos != null && listDronePedidos.Pedidos.Count > 0 ? (listDronePedidos.Pedidos.Sum(s => s.DistanciaDaEntrega) + pedidoNovo.DistanciaDaEntrega) : pedidoNovo.DistanciaDaEntrega;
+            var distanciaDeTodosPedidosKM = distanciaDeTodosPedidosEmMetros / 1000;
+
+            var tempoTotalDeViagemParaTodosPedidosEmMinutos = (distanciaDeTodosPedidosKM * 60) / drone.Velocidade; //Multiplicando o KM por 60 minutos para representar Km/h e depois divido pela velocidade máxima do drone
+            
+            if ((tempoTotalDeViagemParaTodosPedidosEmMinutos * 2) <= drone.Autonomia) // Multiplico por 2 porque tem a ida e a volta, assim saberei o tempo total gasto em Minutos para entregar os pedidos
+            {
+                temAuto = true;
+            }
+
+            return temAuto;
+
         }
         #endregion
     }

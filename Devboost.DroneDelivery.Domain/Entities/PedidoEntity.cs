@@ -13,12 +13,14 @@ namespace Devboost.DroneDelivery.Domain.Entities
         public string Status { get; set; }
         public DroneEntity Drone { get; set; }
         public Guid DroneId { get; set; }
+        public double DistanciaDaEntrega { get; set; }
+
         public readonly double DistanciaMaxima = 17000;
         public readonly int PesoGramasMaximo = 12000;
 
-        public bool ValidaPedido(double distanciaMetros)
+        public bool ValidaPedido()
         {
-            return distanciaMetros <= DistanciaMaxima && Peso <= PesoGramasMaximo;
+            return DistanciaDaEntrega <= DistanciaMaxima && Peso <= PesoGramasMaximo;
         }
     }
 }
