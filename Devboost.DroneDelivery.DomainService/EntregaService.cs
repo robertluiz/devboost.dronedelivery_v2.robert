@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Devboost.DroneDelivery.Domain.Interfaces.Services;
 using System.Threading.Tasks;
-using Devboost.DroneDelivery.Domain.Entities;
-using Devboost.DroneDelivery.Domain.Enums;
-using Devboost.DroneDelivery.Domain.Interfaces.Repository;
-using Devboost.DroneDelivery.Domain.Interfaces.Services;
-using Devboost.DroneDelivery.Domain.Params;
 
 namespace Devboost.DroneDelivery.DomainService
 {
@@ -20,7 +14,7 @@ namespace Devboost.DroneDelivery.DomainService
 
         public async Task Inicia()
         {
-            _droneService.LiberaDrone();
+            await _droneService.LiberaDrone();
         }        
     }
 }
