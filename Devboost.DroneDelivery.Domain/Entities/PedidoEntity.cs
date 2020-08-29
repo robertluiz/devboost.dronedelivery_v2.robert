@@ -6,19 +6,21 @@ namespace Devboost.DroneDelivery.Domain.Entities
     public class PedidoEntity
     {
         public Guid Id { get; set; }
-        public int PesoGramas {get; set;}
+        public int Peso {get; set;}
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public DateTime? DataHora { get; set; }
-        public PedidoStatus Status { get; set; }
+        public string Status { get; set; }
         public DroneEntity Drone { get; set; }
         public Guid DroneId { get; set; }
-        public readonly double DistanciaMaxima = 17000;
-        public readonly int PesoGamasMaximo = 12000;
+        public double DistanciaDaEntrega { get; set; }
 
-        public bool ValidaPedido(double distanciaMetros)
+        public readonly double DistanciaMaxima = 17000;
+        public readonly int PesoGramasMaximo = 12000;
+
+        public bool ValidaPedido()
         {
-            return distanciaMetros <= DistanciaMaxima && PesoGramas <= PesoGamasMaximo;
+            return DistanciaDaEntrega <= DistanciaMaxima && Peso <= PesoGramasMaximo;
         }
     }
 }

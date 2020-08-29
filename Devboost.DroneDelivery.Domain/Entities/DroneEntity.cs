@@ -6,11 +6,11 @@ namespace Devboost.DroneDelivery.Domain.Entities
     public class DroneEntity
     {
         public Guid Id { get; set; }
-        public int CapacidadeGamas { get; set; }
-        public int VelocidadeKmH { get; set; }
-        public int AutonomiaMinitos { get; set; }
+        public int Capacidade { get; set; }
+        public int Velocidade { get; set; }
+        public int Autonomia { get; set; }
         
-        public int CargaGramas { get; set; }
+        public int Carga { get; set; }
         public DroneStatus Status { get; set; }
         public DateTime? DataAtualizacao { get; set; }
 

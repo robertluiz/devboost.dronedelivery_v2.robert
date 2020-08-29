@@ -35,17 +35,42 @@ namespace Devboost.DroneDelivery.Repository.Implementation
 
         }
 
-        public async Task<PedidoEntity> GetByDroneID(Guid droneId)
+        public async Task<List<PedidoEntity>> GetByDroneID(Guid droneId)
+        {
+            using var conexao = await _dbFactory.OpenAsync();
+            conexao.CreateTableIfNotExists<Pedido>();
+            var p = await conexao.SelectAsync<Pedido>(
+                p =>
+                    p.DroneId == droneId);
+
+            return p.ConvertTo<List<PedidoEntity>>();
+            
+        }
+
+        public async Task<List<PedidoEntity>> GetByDroneIDAndStatus(Guid droneId, PedidoStatus status)
+        {
+            using var conexao = await _dbFactory.OpenAsync();
+            conexao.CreateTableIfNotExists<Pedido>();
+            var p = await conexao.SelectAsync<Pedido>(
+                p =>
+                    p.DroneId == droneId
+                    && p.Status == status.ToString());
+
+            return p.ConvertTo<List<PedidoEntity>>();
+
+        }
+
+        public async Task<PedidoEntity> GetSingleByDroneID(Guid droneId)
         {
             using var conexao = await _dbFactory.OpenAsync();
             conexao.CreateTableIfNotExists<Pedido>();
             var p = await conexao.SingleAsync<Pedido>(
-                p => 
-                    p.DroneId == droneId 
+                p =>
+                    p.DroneId == droneId
                     && p.Status == PedidoStatus.EmTransito.ToString());
 
             return p.ConvertTo<PedidoEntity>();
-            
+
         }
 
         public async Task Inserir(PedidoEntity pedido)

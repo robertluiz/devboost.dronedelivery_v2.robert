@@ -23,7 +23,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
             _dbFactory = new OrmLiteConnectionFactory(
                 config.GetConnectionString(_configConnectionString),  
                 SqlServerDialect.Provider);
-        }
+        }        
 
         public async Task<List<DroneEntity>> GetAll()
         {
@@ -74,9 +74,10 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                 {
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
-                    Autonomia = 35,
-                    Capacidade = 12000,
-                    Velocidade = 60,
+                    Autonomia = 35, //Minutos
+                    Capacidade = 12, //Kg
+                    Velocidade = 60, //Km por h
+                    Carga = 60, //Minutos para carregar totalmente
                     DataAtualizacao = DateTime.Now
                 },
                 new Drone
@@ -84,8 +85,9 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12000,
+                    Capacidade = 12,
                     Velocidade = 60,
+                    Carga = 60,
                     DataAtualizacao = DateTime.Now
                 },
                 new Drone
@@ -93,8 +95,9 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12000,
+                    Capacidade = 12,
                     Velocidade = 60,
+                    Carga = 60,
                     DataAtualizacao = DateTime.Now
                 },
                 new Drone
@@ -102,8 +105,9 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12000,
+                    Capacidade = 12,
                     Velocidade = 60,
+                    Carga = 60,
                     DataAtualizacao = DateTime.Now
                 },
                 new Drone
@@ -111,8 +115,9 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12000,
+                    Capacidade = 12,
                     Velocidade = 60,
+                    Carga = 60,
                     DataAtualizacao = DateTime.Now
                 },
                 new Drone
@@ -120,8 +125,9 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12000,
+                    Capacidade = 12,
                     Velocidade = 60,
+                    Carga = 60,
                     DataAtualizacao = DateTime.Now
                 },
                 new Drone
@@ -129,8 +135,9 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12000,
+                    Capacidade = 12,
                     Velocidade = 60,
+                    Carga = 60,
                     DataAtualizacao = DateTime.Now
                 },
             };

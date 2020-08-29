@@ -8,7 +8,8 @@ namespace Devboost.DroneDelivery.Domain.Interfaces.Services
     public interface IDroneService
     {
         Task<List<ConsultaDronePedidoDTO>> ConsultaDrone();
-        Task<DroneEntity> SelecionarDrone();
+        Task<DroneEntity> SelecionarDrone(PedidoEntity pedido);
+        Task LiberaDrone();
         Task AtualizaDrone(DroneEntity drone);
     }
 }

@@ -18,6 +18,22 @@ namespace Devboost.DroneDelivery.Api.Controllers
             _pedidoService = pedidoService;
         }
 
+        [HttpGet("criados")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var lista = await _pedidoService.GetAll();
+                if (lista.Count.Equals(0)) return NotFound();
+                return Ok(lista);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+
+        }
+
         [HttpPost]
         public async Task<IActionResult>  ReceberPedido(PedidoParam pedido)
         {

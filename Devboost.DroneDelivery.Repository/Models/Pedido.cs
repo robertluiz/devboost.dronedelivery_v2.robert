@@ -18,6 +18,7 @@ namespace Devboost.DroneDelivery.Repository.Models
         public double Longitude { get; set; }
         public string Status { get; set; }
         public DateTime? DataHora { get; set; }
+        public double DistanciaDaEntrega { get; set; }
         public Guid DroneId { get; set; }
     }
 }
