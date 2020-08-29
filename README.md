@@ -1,6 +1,7 @@
 # devboost.dronedelivery.jvmenezes
 Drone Delivery
 
+- Realizando autenticação via JWT com o uso do tipo "Bearer Token"
 - Desenvolvido usando DDD e CQRS
 - Desenvolvido uma API que recebe pedidos, lista drones e seus pedidos associados
 - Cria 7 drones automaticamente na base caso ainda não exista nada cadastrado
