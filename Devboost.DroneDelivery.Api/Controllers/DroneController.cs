@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Devboost.DroneDelivery.Domain.Interfaces.Services;
+﻿using Devboost.DroneDelivery.Domain.Interfaces.Commands;
+using Devboost.DroneDelivery.Domain.Interfaces.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Api.Controllers
 {
@@ -11,11 +12,13 @@ namespace Devboost.DroneDelivery.Api.Controllers
     [ApiController]
     public class DroneController : Controller
     {
-        private readonly IDroneService _droneService;
+        private readonly IDroneCommand _droneCommand;
+        private readonly IDroneQuery _droneQuery;
 
-        public DroneController(IDroneService droneService)
+        public DroneController(IDroneCommand droneCommand, IDroneQuery droneQuery)
         {
-            _droneService = droneService;
+            _droneCommand = droneCommand;
+            _droneQuery = droneQuery;
         }
 
         [HttpGet("situacao")]
@@ -24,7 +27,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         {
             try
             {
-                var lista = await _droneService.ConsultaDrone();
+                var lista = await _droneQuery.ConsultaDrone();
                 if(lista.Count.Equals(0)) return NotFound();
                 return Ok(lista);
             }

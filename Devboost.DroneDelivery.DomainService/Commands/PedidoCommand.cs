@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.Entities;
 using Devboost.DroneDelivery.Domain.Enums;
+using Devboost.DroneDelivery.Domain.Interfaces.Commands;
 using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Domain.Interfaces.Services;
 using Devboost.DroneDelivery.Domain.Params;
 
-namespace Devboost.DroneDelivery.DomainService
+namespace Devboost.DroneDelivery.DomainService.Commands
 {
-    public class PedidoService : IPedidoService
+    public class PedidoCommand : IPedidoCommand
     {
-        private readonly IDroneService _droneService;
+        private readonly IDroneCommand _droneCommand;
         private readonly IPedidosRepository _pedidosRepository;
 
-        public PedidoService(IDroneService droneService, IPedidosRepository pedidosRepository)
+        public PedidoCommand(IDroneCommand droneCommand, IPedidosRepository pedidosRepository)
         {
-            _droneService = droneService;
+            _droneCommand = droneCommand;
             _pedidosRepository = pedidosRepository;
         }
 
@@ -39,13 +40,13 @@ namespace Devboost.DroneDelivery.DomainService
             if (!novoPedido.ValidaPedido())
                 return false;
 
-            var drone = await _droneService.SelecionarDrone(novoPedido);
+            var drone = await _droneCommand.SelecionarDrone(novoPedido);
 
             novoPedido.Drone = drone;
             novoPedido.DroneId = drone != null ? drone.Id : novoPedido.DroneId;
             novoPedido.Status = PedidoStatus.PendenteEntrega.ToString();
             await _pedidosRepository.Inserir(novoPedido);
-            await _droneService.AtualizaDrone(drone);
+            await _droneCommand.AtualizaDrone(drone);
 
             return true;
         }

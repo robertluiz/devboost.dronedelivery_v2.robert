@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.DTOs;
 using Devboost.DroneDelivery.Domain.Entities;
 
-namespace Devboost.DroneDelivery.Domain.Interfaces.Services
+namespace Devboost.DroneDelivery.Domain.Interfaces.Commands
 {
-    public interface IDroneService
+    public interface IDroneCommand
     {
-        Task<List<ConsultaDronePedidoDTO>> ConsultaDrone();
         Task<DroneEntity> SelecionarDrone(PedidoEntity pedido);
         Task LiberaDrone();
         Task AtualizaDrone(DroneEntity drone);

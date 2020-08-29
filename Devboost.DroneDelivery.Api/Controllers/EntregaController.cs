@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Devboost.DroneDelivery.Domain.Enums;
-using Devboost.DroneDelivery.Domain.Interfaces.Services;
-using Devboost.DroneDelivery.Domain.Params;
+﻿using Devboost.DroneDelivery.Domain.Interfaces.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Api.Controllers
 {
@@ -13,11 +11,11 @@ namespace Devboost.DroneDelivery.Api.Controllers
     [ApiController]
     public class EntregaController : Controller
     {
-        private readonly IEntregaService _entregaService;
+        private readonly IEntregaCommand _entregaCommand;
 
-        public EntregaController(IEntregaService entregaService)
+        public EntregaController(IEntregaCommand entregaCommand)
         {
-            _entregaService = entregaService;
+            _entregaCommand = entregaCommand;
         }
 
         [HttpPost("Inicia")]
@@ -26,7 +24,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         {
             try
             {
-               await _entregaService.Inicia();
+               await _entregaCommand.Inicia();
 
                return Ok("Entrega iniciada!");
             }

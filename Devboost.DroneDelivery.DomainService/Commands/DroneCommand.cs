@@ -6,44 +6,22 @@ using Devboost.DroneDelivery.Domain.DTOs;
 using Devboost.DroneDelivery.Domain.Entities;
 using Devboost.DroneDelivery.Domain.Enums;
 using Devboost.DroneDelivery.Domain.Interfaces.Repository;
-using Devboost.DroneDelivery.Domain.Interfaces.Services;
+using Devboost.DroneDelivery.Domain.Interfaces.Commands;
+using Devboost.DroneDelivery.Domain.Interfaces.Queries;
 
-namespace Devboost.DroneDelivery.DomainService
+namespace Devboost.DroneDelivery.DomainService.Commands
 {
-    public class DroneService : IDroneService
+    public class DroneCommand : IDroneCommand
     {
         private readonly IDronesRepository _dronesRepository;
         private readonly IPedidosRepository _pedidosRepository;
-        public DroneService(IDronesRepository dronesRepository, IPedidosRepository pedidosRepository)
+        private readonly IDroneQuery _droneQuery;
+
+        public DroneCommand(IDronesRepository dronesRepository, IPedidosRepository pedidosRepository, IDroneQuery droneQuery)
         {
             _dronesRepository = dronesRepository;
             _pedidosRepository = pedidosRepository;
-        }
-
-        public async Task<List<ConsultaDronePedidoDTO>> ConsultaDrone()
-        {
-            var listaDrones = await _dronesRepository.GetAll();
-            AtualizaStatusDrones(listaDrones);
-            var drones = await _dronesRepository.GetAll();
-            return drones.Select(async d => await RetornConsultaDronePedido(d))
-                .ToList()
-                .Select(c => c.Result)
-                .ToList();
-
-        }
-
-        private async Task<ConsultaDronePedidoDTO> RetornConsultaDronePedido(DroneEntity drone)
-        {
-
-            var pedidos = await _pedidosRepository.GetByDroneID(drone.Id);
-
-            return new ConsultaDronePedidoDTO
-            {
-
-                IdDrone = drone.Id,
-                Situacao = drone.Status.ToString(),
-                Pedidos = pedidos
-            };
+            _droneQuery = droneQuery;
         }
 
         public async Task<DroneEntity> SelecionarDrone(PedidoEntity pedido)
@@ -59,7 +37,7 @@ namespace Devboost.DroneDelivery.DomainService
                 if (!Disponivel(item)) //Se o drone não encontra-se disponível, então pula para verificar a disponibilidade do próximo
                     continue;
 
-                var listPedidosDrone = await RetornConsultaDronePedido(item);
+                var listPedidosDrone = await _droneQuery.RetornaConsultaDronePedido(item);
 
                 if (SuportaPeso(listPedidosDrone, item, pedido) && TemAutonomiaSuficiente(listPedidosDrone, item, pedido)) 
                 {
@@ -77,7 +55,7 @@ namespace Devboost.DroneDelivery.DomainService
 
             foreach (var item in listaDrones)
             {
-                var listPedidosDrone = await RetornConsultaDronePedido(item);
+                var listPedidosDrone = await _droneQuery.RetornaConsultaDronePedido(item);
 
                 if (!TemPedido(listPedidosDrone)) //Se o drone ainda não tem pedido, então ele não será atualizado o seu status, pois não tem entrega para efetuar
                 {
