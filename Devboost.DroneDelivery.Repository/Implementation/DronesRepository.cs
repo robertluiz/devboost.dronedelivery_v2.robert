@@ -75,7 +75,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35, //Minutos
-                    Capacidade = 12, //Kg
+                    Capacidade = 12000, //gramas
                     Velocidade = 60, //Km por h
                     Carga = 60, //Minutos para carregar totalmente
                     DataAtualizacao = DateTime.Now
@@ -85,7 +85,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12,
+                    Capacidade = 12000,
                     Velocidade = 60,
                     Carga = 60,
                     DataAtualizacao = DateTime.Now
@@ -95,7 +95,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12,
+                    Capacidade = 12000,
                     Velocidade = 60,
                     Carga = 60,
                     DataAtualizacao = DateTime.Now
@@ -105,7 +105,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12,
+                    Capacidade = 12000,
                     Velocidade = 60,
                     Carga = 60,
                     DataAtualizacao = DateTime.Now
@@ -115,7 +115,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12,
+                    Capacidade = 12000,
                     Velocidade = 60,
                     Carga = 60,
                     DataAtualizacao = DateTime.Now
@@ -125,7 +125,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12,
+                    Capacidade = 12000,
                     Velocidade = 60,
                     Carga = 60,
                     DataAtualizacao = DateTime.Now
@@ -135,7 +135,7 @@ namespace Devboost.DroneDelivery.Repository.Implementation
                     Id = Guid.NewGuid(),
                     Status = DroneStatus.Pronto.ToString(),
                     Autonomia = 35,
-                    Capacidade = 12,
+                    Capacidade = 12000,
                     Velocidade = 60,
                     Carga = 60,
                     DataAtualizacao = DateTime.Now
