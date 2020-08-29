@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         }
 
         [HttpGet("situacao")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult>  SituacaoDrone()
         {
             try

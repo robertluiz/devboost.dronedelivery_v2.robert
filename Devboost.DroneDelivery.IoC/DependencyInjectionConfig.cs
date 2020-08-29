@@ -1,5 +1,6 @@
 ﻿using Devboost.DroneDelivery.Domain.Interfaces.Repository;
 using Devboost.DroneDelivery.Domain.Interfaces.Services;
+using Devboost.DroneDelivery.Domain.VOs;
 using Devboost.DroneDelivery.DomainService;
 using Devboost.DroneDelivery.Repository.Implementation;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,11 @@ namespace Devboost.DroneDelivery.IoC
             services.AddScoped<IDroneService, DroneService>();
             services.AddScoped<IPedidoService, PedidoService>();
             services.AddScoped<IEntregaService, EntregaService>();
+            services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+            services.AddScoped<IAuthService, AuthService>();
+            
+            
+            
             return services;
         }
     }

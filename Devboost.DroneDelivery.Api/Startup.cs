@@ -1,3 +1,4 @@
+using Devboost.DroneDelivery.Domain.VOs;
 using Devboost.DroneDelivery.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +21,9 @@ namespace Devboost.DroneDelivery.Api
         public void ConfigureServices(IServiceCollection services)
         {
             
+            services.Configure<AppSettingsVO>(Configuration.GetSection("TokenSettings"));
             services.AddControllers();
+            services.AddTokenConfiguration(Configuration);
             services.AddSwaggerGen();
             services.ResolveDependencies(Configuration);
         }
@@ -38,11 +41,13 @@ namespace Devboost.DroneDelivery.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

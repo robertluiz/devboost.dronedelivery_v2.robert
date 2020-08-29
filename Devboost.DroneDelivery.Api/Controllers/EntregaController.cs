@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Devboost.DroneDelivery.Domain.Enums;
 using Devboost.DroneDelivery.Domain.Interfaces.Services;
 using Devboost.DroneDelivery.Domain.Params;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +21,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         }
 
         [HttpPost("Inicia")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult>  IniciaEntrega()
         {
             try

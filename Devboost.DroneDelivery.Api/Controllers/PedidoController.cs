@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Devboost.DroneDelivery.Domain.Interfaces.Services;
 using Devboost.DroneDelivery.Domain.Params;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         }
 
         [HttpGet("criados")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -35,6 +37,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Comprador")]
         public async Task<IActionResult>  ReceberPedido(PedidoParam pedido)
         {
             try
