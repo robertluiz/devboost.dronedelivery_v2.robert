@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text;
-using Devboost.DroneDelivery.Domain.VOs;
-using Microsoft.Extensions.Configuration;
+﻿using Devboost.DroneDelivery.Domain.VOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Text;
 
 namespace Devboost.DroneDelivery.IoC
 {

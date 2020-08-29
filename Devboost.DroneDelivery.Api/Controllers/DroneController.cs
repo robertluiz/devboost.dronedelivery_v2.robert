@@ -22,7 +22,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         }
 
         [HttpGet("situacao")]
-        [Authorize(Roles = "Administrador")]
+        [AllowAnonymous]
         public async Task<IActionResult>  SituacaoDrone()
         {
             try

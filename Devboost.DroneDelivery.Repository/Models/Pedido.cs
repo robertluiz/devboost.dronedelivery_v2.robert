@@ -14,11 +14,12 @@ namespace Devboost.DroneDelivery.Repository.Models
 
         public Guid Id { get; set; }
         public int Peso { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        //public double Latitude { get; set; }
+        //public double Longitude { get; set; }
         public string Status { get; set; }
         public DateTime? DataHora { get; set; }
         public double DistanciaDaEntrega { get; set; }
         public Guid DroneId { get; set; }
+        public Guid CompradorId { get; set; }
     }
 }

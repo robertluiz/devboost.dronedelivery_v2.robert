@@ -25,6 +25,8 @@ namespace Devboost.DroneDelivery.IoC
             services.AddScoped<IDroneQuery, DroneQuery>();
             services.AddScoped<IPedidoCommand, PedidoCommand>();
             services.AddScoped<IPedidoQuery, PedidoQuery>();
+            services.AddScoped<IUsuarioCommand, UsuarioCommand>();
+            services.AddScoped<IUsuarioQuery, UsuarioQuery>();
 
             return services;
         }

@@ -10,5 +10,8 @@ namespace Devboost.DroneDelivery.Domain.Entities
         public string Login { get; set; }
         public string Senha { get; set; }
         public RoleEnum Role { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public DateTime DataCadastro { get; set; }
     }
 }
