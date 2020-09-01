@@ -9,35 +9,33 @@ using System.Threading.Tasks;
 
 namespace Devboost.DroneDelivery.Api.Controllers
 {
-    [Route("v1/pedido")]
+    [Route("v1/usuario")]
     [ApiController]
-    public class PedidoController : Controller
+    public class UsuarioController : Controller
     {
-        private readonly IPedidoCommand _pedidoCommand;
-        private readonly IPedidoQuery _pedidoQuery;
+        private readonly IUsuarioCommand _usuarioCommand;
+        private readonly IUsuarioQuery _usuarioQuery;
 
-        public PedidoController(IPedidoCommand pedidoCommand, IPedidoQuery pedidoQuery)
+        public UsuarioController(IUsuarioCommand usuarioCommand, IUsuarioQuery usuarioQuery)
         {
-            _pedidoCommand = pedidoCommand;
-            _pedidoQuery = pedidoQuery;
+            _usuarioCommand = usuarioCommand;
+            _usuarioQuery = usuarioQuery;
         }
-        
-        [HttpPost("cadastrar")]
-        [Authorize(Roles = "Comprador,Administrador")]
-        public async Task<IActionResult>  Cadastrar(PedidoParam pedido)
+
+        [HttpPost("cadastrar")]        
+        [AllowAnonymous]
+        public async Task<IActionResult> Cadastrar([FromBody] UsuarioParam user)
         {
             try
             {
-                pedido.Login = User.Identity.Name;
-
-               var resultado = await _pedidoCommand.InserirPedido(pedido);
-               if (!resultado)
-                   return BadRequest("Pedido não aceito");
-               return Ok("Pedido realizado com sucesso!");
+                var resultado = await _usuarioCommand.Criar(user);
+                if (!resultado)
+                    return BadRequest("Usuário não cadastrado");
+                return Ok("Usuário cadastrado com sucesso!");
             }
             catch (Exception e)
             {
-              return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 
             }
 
@@ -49,7 +47,7 @@ namespace Devboost.DroneDelivery.Api.Controllers
         {
             try
             {
-                var lista = await _pedidoQuery.GetAll();
+                var lista = await _usuarioQuery.GetAll();
                 if (lista.Count.Equals(0)) return NotFound();
                 return Ok(lista);
             }

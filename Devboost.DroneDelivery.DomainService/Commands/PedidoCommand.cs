@@ -14,26 +14,29 @@ namespace Devboost.DroneDelivery.DomainService.Commands
     {
         private readonly IDroneCommand _droneCommand;
         private readonly IPedidosRepository _pedidosRepository;
+        private readonly IUsuariosRepository _usuariosRepository;
 
-        public PedidoCommand(IDroneCommand droneCommand, IPedidosRepository pedidosRepository)
+        public PedidoCommand(IDroneCommand droneCommand, IPedidosRepository pedidosRepository, IUsuariosRepository usuariosRepository)
         {
             _droneCommand = droneCommand;
             _pedidosRepository = pedidosRepository;
+            _usuariosRepository = usuariosRepository;
         }
 
         public async Task<bool> InserirPedido(PedidoParam pedido)
         {
+            var userDono = await _usuariosRepository.GetSingleByLogin(pedido.Login);
+
             var novoPedido = new PedidoEntity
             {
                 Id = Guid.NewGuid(),
-                Peso = pedido.Peso,
-                Latitude = pedido.Latitude,
-                Longitude = pedido.Longitude,
+                Peso = pedido.Peso,                
                 DataHora = pedido.DataHora,
+                CompradorId = userDono.Id
             };
 
             //calculoDistancia
-            novoPedido.DistanciaDaEntrega = GeolocalizacaoService.CalcularDistanciaEmMetro(pedido.Latitude, pedido.Longitude);
+            novoPedido.DistanciaDaEntrega = GeolocalizacaoService.CalcularDistanciaEmMetro(userDono.Latitude, userDono.Longitude);
             //var distanciaEmMilhas = GeolocalizacaoService.distance(pedido.Latitude, pedido.Longitude, 'M');
             //var distanciaEmMilhasNauticas = GeolocalizacaoService.distance(pedido.Latitude, pedido.Longitude, 'N');
 

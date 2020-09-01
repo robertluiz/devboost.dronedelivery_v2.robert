@@ -12,10 +12,13 @@ namespace Devboost.DroneDelivery.DomainService.Queries
     {
         private readonly IDronesRepository _dronesRepository;
         private readonly IPedidosRepository _pedidosRepository;
-        public DroneQuery(IDronesRepository dronesRepository, IPedidosRepository pedidosRepository)
+        private readonly IUsuariosRepository _usuariosRepository;
+
+        public DroneQuery(IDronesRepository dronesRepository, IPedidosRepository pedidosRepository, IUsuariosRepository usuariosRepository)
         {
             _dronesRepository = dronesRepository;
             _pedidosRepository = pedidosRepository;
+            _usuariosRepository = usuariosRepository;
         }
 
         public async Task<List<ConsultaDronePedidoDTO>> ConsultaDrone()
@@ -35,13 +38,41 @@ namespace Devboost.DroneDelivery.DomainService.Queries
 
             var pedidos = await _pedidosRepository.GetByDroneID(drone.Id);
 
+            List<ConsultaPedidoCompradorDTO> listPedidoComprador = null;
+
+            if (pedidos != null)
+            {
+                listPedidoComprador = pedidos.Select(async d => await GetPedidosWithComprador(d))
+                .Select(c => c.Result).ToList();
+
+            }
+
             return new ConsultaDronePedidoDTO
             {
 
                 IdDrone = drone.Id,
                 Situacao = drone.Status.ToString(),
-                Pedidos = pedidos
+                Pedidos = pedidos,
+                PedidosComprador = listPedidoComprador
             };
-        }        
+        }
+
+        public async Task<ConsultaPedidoCompradorDTO> GetPedidosWithComprador(PedidoEntity p)
+        {
+            var userComprador = await _usuariosRepository.GetSingleById(p.CompradorId);
+
+            return new ConsultaPedidoCompradorDTO
+            {
+                PedidoId = p.Id,
+                Status = p.Status,
+                CompradorId = p.CompradorId,
+                NomeComprador = userComprador.Nome,
+                DataHora = p.DataHora,
+                DistanciaDaEntrega = p.DistanciaDaEntrega,
+                Peso = p.Peso,
+                Latitude = userComprador.Latitude,
+                Longitude = userComprador.Longitude
+            };
+        }
     }
 }
